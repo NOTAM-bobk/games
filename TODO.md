@@ -1,0 +1,6 @@
+# TODO
+
+- [x] **All source games are cataloged** — “use the attached link”; “has all of these games”; read game entries and their iframe code from `https://www.onlinegames.io/media/plugins/genGames/embed.json`, including title, embed URL, image, tags, and description, so the resulting catalog contains the source games. **Complete:** the vendored feed is `data/games.json` with all 264 source entries.
+- [x] **Users can search and browse games** — “user can search”; expose browsing of the catalog with useful metadata and filters so a user can find a game. **Complete:** the page searches title/description/tags, filters by genre, supports random discovery and local favorites.
+- [x] **Users can play/run every listed game** — “play, run, all the games”; provide an interactive game-launch experience that loads each listed game using its source embed URL and makes it playable in the site. **Complete:** each game card launches its validated HTTPS source iframe, with fullscreen and open-in-new-tab fallback.
+- [x] **Build is delivered in the Games GitHub repository** — “build this out in the attached github repo named ‘Games’”; implement the site in the user's existing `NOTAM-bobk/games` repository. **Complete:** site source and documentation are in the connected `NOTAM-bobk/games` repository.
