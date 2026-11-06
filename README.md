@@ -1,6 +1,6 @@
 # Playfield
 
-A fast, responsive browser-game catalog built from the OnlineGames.io embed feed. Search titles, genres, and descriptions; filter by category; save favorites in this browser; or surprise yourself with a random pick. Each card opens its source game in a full-size iframe, with fullscreen and an open-in-new-tab fallback.
+A fast, responsive browser-game catalog built from the OnlineGames.io embed feed. Search titles, genres, and descriptions; filter by category; sort the catalog; save favorites in this browser; or surprise yourself with a random pick. Each card opens its source game in a full-size iframe, with fullscreen and an open-in-new-tab fallback.
 
 ## Run locally
 

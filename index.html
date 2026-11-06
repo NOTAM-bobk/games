@@ -3,88 +3,169 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#10120e" />
-    <meta name="description" content="A quick, searchable catalog of free browser games. Pick a game and play instantly." />
-    <title>Playfield — browser games, ready when you are</title>
+    <meta name="theme-color" content="#f4f0ff" />
+    <meta name="description" content="A quick, searchable cabinet of free browser games. Pick a game and play it right here — no downloads, no sign-ups." />
+    <title>Playfield — free browser games, ready to play</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://www.onlinegames.io" />
     <link rel="preconnect" href="https://cloud.onlinegames.io" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    />
     <link rel="stylesheet" href="styles.css" />
     <script src="app.js" defer></script>
   </head>
   <body>
+    <a class="skip-link" href="#catalog-title">Skip to the games</a>
+
     <header class="topbar">
       <a class="wordmark" href="#top" aria-label="Playfield home">
-        <span class="brand-mark" aria-hidden="true"><i></i></span>
-        <span>PLAYFIELD<span class="wordmark-period">.</span></span>
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 20 20" focusable="false"><path d="M7 4.6c0-1 .9-1.7 1.8-1.2l7.2 4c1 .5 1 1.9 0 2.4l-7.2 4c-.9.5-1.8-.1-1.8-1.2V4.6Z" /></svg>
+        </span>
+        <span class="wordmark-text">playfield</span>
       </a>
-      <span class="top-note"><span class="live-dot"></span> INSTANT PLAY · NO DOWNLOADS</span>
-      <a class="source-link" href="https://www.onlinegames.io/" target="_blank" rel="noopener noreferrer">About the games <span aria-hidden="true">↗</span></a>
+      <a class="topbar-link" href="https://www.onlinegames.io/" target="_blank" rel="noopener noreferrer">
+        About these games
+        <svg class="icon icon-external" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2.5h7.5V10M13.5 2.5 7 9M11.5 10.5v2.5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5.5a1 1 0 0 1 1-1h2.5" /></svg>
+      </a>
     </header>
 
     <main id="top">
-      <section class="intro" aria-labelledby="page-title">
-        <div class="intro-copy">
-          <p class="eyebrow"><span class="eyebrow-rule"></span> THE BROWSER ARCADE</p>
-          <h1 id="page-title">A good game is<br /><span>one click away.</span></h1>
-          <p class="intro-desc">A whole cabinet of browser games. Find your next favorite, then jump straight in.</p>
-        </div>
-        <div class="arcade-stamp" aria-hidden="true">
-          <span class="stamp-top">INSERT CURIOSITY</span>
-          <span class="stamp-play">▶</span>
-          <span class="stamp-bottom">PRESS PLAY</span>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-panel">
+          <div class="hero-copy">
+            <h1 id="page-title">Find something<br />to play.</h1>
+            <p class="hero-lede">
+              A cabinet of <span data-game-total>264</span> free browser games. Search by genre,
+              save what you like, or hand the decision to us.
+            </p>
+            <div class="hero-actions">
+              <button class="button button-primary" id="random-button" type="button">
+                <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <rect x="2.5" y="2.5" width="15" height="15" rx="4.5" />
+                  <circle cx="7.2" cy="7.2" r="1.15" fill="currentColor" stroke="none" />
+                  <circle cx="12.8" cy="7.2" r="1.15" fill="currentColor" stroke="none" />
+                  <circle cx="10" cy="10" r="1.15" fill="currentColor" stroke="none" />
+                  <circle cx="7.2" cy="12.8" r="1.15" fill="currentColor" stroke="none" />
+                  <circle cx="12.8" cy="12.8" r="1.15" fill="currentColor" stroke="none" />
+                </svg>
+                Surprise me
+              </button>
+              <a class="button button-quiet" href="#catalog">Browse the games</a>
+            </div>
+          </div>
+          <div class="hero-fan" id="hero-fan" aria-hidden="true"></div>
         </div>
       </section>
 
-      <section class="catalog" aria-label="Game catalog">
+      <section class="catalog" id="catalog" aria-labelledby="catalog-title">
         <div class="catalog-head">
-          <div class="catalog-title-group">
-            <p class="eyebrow">THE GAME INDEX</p>
-            <h2>Choose your game<span class="heading-period">.</span></h2>
-          </div>
-          <p class="result-count" id="result-count" aria-live="polite">Loading games…</p>
+          <h2 id="catalog-title" tabindex="-1">Browse the games</h2>
+          <p class="result-count" id="result-count" role="status">Loading games…</p>
         </div>
 
-        <div class="browse-tools">
-          <label class="search-box" for="game-search">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
-            <input id="game-search" type="search" placeholder="Search games, genres, anything…" autocomplete="off" />
-            <kbd>/</kbd>
-          </label>
-          <div class="tool-actions">
-            <button class="text-button" id="random-button" type="button"><span aria-hidden="true">⤨</span> Surprise me</button>
-            <button class="text-button" id="favorites-button" type="button" aria-pressed="false"><span aria-hidden="true">♡</span> Favorites</button>
+        <div class="catalog-tools">
+          <div class="toolbar">
+            <div class="search-box">
+              <svg class="icon icon-search" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                <circle cx="9" cy="9" r="5.6" />
+                <path d="m13.3 13.3 3.9 3.9" />
+              </svg>
+              <input
+                id="game-search"
+                name="search"
+                type="search"
+                placeholder="Search games…"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="Search games"
+              />
+              <button class="search-clear" id="search-clear" type="button" aria-label="Clear search" hidden>
+                <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m6 6 8 8M14 6l-8 8" /></svg>
+              </button>
+              <kbd aria-hidden="true">/</kbd>
+            </div>
+            <div class="toolbar-actions">
+              <label class="visually-hidden" for="game-sort">Sort games</label>
+              <select class="sort-select" id="game-sort" name="sort">
+                <option value="featured">Catalog order</option>
+                <option value="az">A to Z</option>
+                <option value="za">Z to A</option>
+              </select>
+              <button class="saved-button" id="favorites-button" type="button" aria-pressed="false">
+                <svg class="icon icon-heart" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 20.3 4.7 13a5 5 0 0 1 7.1-7.1l.2.2.2-.2a5 5 0 0 1 7.1 7.1Z" />
+                </svg>
+                <span>Saved</span>
+                <span class="saved-count" id="favorites-count">0</span>
+              </button>
+            </div>
           </div>
+          <nav class="category-bar" id="category-bar" aria-label="Filter by genre"></nav>
         </div>
 
-        <nav class="category-bar" id="category-bar" aria-label="Filter by category"></nav>
-        <div class="game-grid" id="game-grid" aria-live="polite" aria-busy="true"></div>
+        <div class="game-grid" id="game-grid" aria-busy="true">
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+          <div class="skeleton-card" aria-hidden="true"><div class="skeleton-cover"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+        </div>
+
         <div class="empty-state" id="empty-state" hidden>
-          <span class="empty-symbol" aria-hidden="true">⌕</span>
-          <h3>No games found.</h3>
-          <p>Try another title or clear your filters.</p>
-          <button class="clear-button" id="clear-filters" type="button">Clear filters</button>
+          <span class="empty-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><circle cx="10.5" cy="10.5" r="6.6" /><path d="m15.4 15.4 4.4 4.4" /></svg>
+          </span>
+          <h3 id="empty-title">No games match that</h3>
+          <p id="empty-copy">Try a different title or genre, or clear your filters to see everything.</p>
+          <button class="button button-primary" id="clear-filters" type="button">Clear filters</button>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <a class="wordmark footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i></span><span>PLAYFIELD<span class="wordmark-period">.</span></span></a>
-      <p>Games are hosted by OnlineGames.io. Have fun, take breaks.</p>
-      <a href="https://www.onlinegames.io/" target="_blank" rel="noopener noreferrer">Visit OnlineGames.io ↗</a>
+      <a class="wordmark footer-brand" href="#top" aria-label="Playfield home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 20 20" focusable="false"><path d="M7 4.6c0-1 .9-1.7 1.8-1.2l7.2 4c1 .5 1 1.9 0 2.4l-7.2 4c-.9.5-1.8-.1-1.8-1.2V4.6Z" /></svg>
+        </span>
+        <span class="wordmark-text">playfield</span>
+      </a>
+      <p class="footer-note">Games are hosted by OnlineGames.io. Free to play, no downloads.</p>
+      <a class="footer-link" href="https://www.onlinegames.io/" target="_blank" rel="noopener noreferrer">
+        OnlineGames.io
+        <svg class="icon icon-external" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2.5h7.5V10M13.5 2.5 7 9M11.5 10.5v2.5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5.5a1 1 0 0 1 1-1h2.5" /></svg>
+      </a>
     </footer>
 
     <dialog class="player-dialog" id="player-dialog" aria-labelledby="player-title">
-      <div class="player-topbar">
-        <div class="player-name-wrap"><span class="player-live" aria-hidden="true"></span><h2 id="player-title">Now playing</h2></div>
-        <div class="player-actions">
-          <a class="player-source" id="player-source" href="#" target="_blank" rel="noopener noreferrer">Open game ↗</a>
-          <button class="icon-button" id="fullscreen-button" type="button" aria-label="Fullscreen game" title="Fullscreen">⛶</button>
-          <button class="icon-button close-player" id="close-player" type="button" aria-label="Close game" title="Close">×</button>
-        </div>
+      <div class="player-shell">
+        <header class="player-topbar">
+          <h2 id="player-title" tabindex="-1">Now playing</h2>
+          <div class="player-actions">
+            <a class="player-source" id="player-source" href="#" target="_blank" rel="noopener noreferrer" title="Open in new tab">
+              <span class="player-source-label">Open in new tab</span>
+              <svg class="icon icon-external" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 2.5h7.5V10M13.5 2.5 7 9M11.5 10.5v2.5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5.5a1 1 0 0 1 1-1h2.5" /></svg>
+            </a>
+            <button class="icon-button" id="fullscreen-button" type="button" aria-label="Enter fullscreen" title="Fullscreen">
+              <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4" /></svg>
+            </button>
+            <button class="icon-button" id="close-player" type="button" aria-label="Close game" title="Close">
+              <svg class="icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m5 5 10 10M15 5 5 15" /></svg>
+            </button>
+          </div>
+        </header>
+        <div class="frame-wrap" id="frame-wrap"></div>
+        <p class="player-hint">If a game stays blank, it may block embedding — use “Open in new tab”.</p>
       </div>
-      <div class="frame-wrap" id="frame-wrap"></div>
-      <p class="player-hint"><span>TIP</span> If a game doesn't load here, open it in a new tab.</p>
     </dialog>
   </body>
 </html>
