@@ -1,4 +1,4 @@
-const DATA_URL = 'data/games.json';
+const DATA_URLS = ['data/games.json', 'data/gamedistribution-games.json'];
 const FAVORITES_KEY = 'playfield-favorites-v1';
 const GENRE_TAGS = ['arcade', 'action', 'racing', 'driving', 'puzzle', 'simulation', 'adventure', 'multiplayer', 'sports', 'strategy', 'shooting', 'battle', 'battle-royale', 'io-games'];
 const CATEGORY_LIMIT = 10;
@@ -70,10 +70,20 @@ function validGame(game) {
   if (!game || typeof game.title !== 'string' || typeof game.embed !== 'string') return false;
   try {
     const url = new URL(game.embed);
-    return url.protocol === 'https:' && (url.hostname === 'onlinegames.io' || url.hostname.endsWith('.onlinegames.io'));
+    const onlineGamesHost = url.hostname === 'onlinegames.io' || url.hostname.endsWith('.onlinegames.io');
+    const gameDistributionHost = url.hostname === 'html5.gamedistribution.com' || url.hostname === 'embed.gamedistribution.com';
+    return url.protocol === 'https:' && (onlineGamesHost || gameDistributionHost);
   } catch {
     return false;
   }
+}
+
+function getGameEmbedUrl(game) {
+  const url = new URL(game.embed);
+  if (url.hostname === 'html5.gamedistribution.com' || url.hostname === 'embed.gamedistribution.com') {
+    url.searchParams.set('gd_sdk_referrer_url', `${window.location.origin}${window.location.pathname}`);
+  }
+  return url.href;
 }
 
 function cleanDescription(game) {
@@ -292,14 +302,15 @@ function openGame(game, trigger) {
   activeGame = game;
   lastFocused = trigger instanceof HTMLElement ? trigger : document.activeElement;
   playerTitle.textContent = game.title;
-  playerSource.href = game.embed;
+  const gameUrl = getGameEmbedUrl(game);
+  playerSource.href = game.source || gameUrl;
   playerSource.setAttribute('aria-label', `Open ${game.title} in a new tab`);
 
   frameWrap.replaceChildren();
   const { loader, text } = createLoader();
 
   const iframe = document.createElement('iframe');
-  iframe.src = game.embed;
+  iframe.src = gameUrl;
   iframe.title = `${game.title} game`;
   iframe.allow = 'autoplay; fullscreen; gamepad; accelerometer; gyroscope; clipboard-read; clipboard-write';
   iframe.referrerPolicy = 'strict-origin-when-cross-origin';
@@ -490,10 +501,14 @@ document.addEventListener('keydown', (event) => {
 
 async function init() {
   try {
-    const response = await fetch(DATA_URL);
-    if (!response.ok) throw new Error(`Catalog request failed (${response.status})`);
-    const rawGames = await response.json();
-    if (!Array.isArray(rawGames)) throw new Error('Catalog format is not a game list');
+    const catalogs = await Promise.all(DATA_URLS.map(async (url) => {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Catalog request failed for ${url} (${response.status})`);
+      const gamesFromSource = await response.json();
+      if (!Array.isArray(gamesFromSource)) throw new Error(`Catalog format is invalid for ${url}`);
+      return gamesFromSource;
+    }));
+    const rawGames = catalogs.flat();
 
     const usedIds = new Set();
     games = rawGames.filter(validGame).map((game, index) => {

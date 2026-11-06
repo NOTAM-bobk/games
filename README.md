@@ -1,10 +1,10 @@
 # Playfield
 
-A fast, responsive browser-game catalog built from the OnlineGames.io embed feed. Search titles, genres, and descriptions; filter by category; sort the catalog; save favorites in this browser; or surprise yourself with a random pick. Each card opens its source game in a full-size iframe, with fullscreen and an open-in-new-tab fallback.
+A fast, responsive browser-game catalog. The site combines 264 entries from OnlineGames.io with 18 games from GameDistribution. Search titles, genres, and descriptions; filter by category; sort the catalog; save favorites in this browser; or pick a random game. Cards launch the source games in a full-size iframe, with fullscreen and an open-in-new-tab fallback.
 
 ## Run locally
 
-Serve this folder over HTTP (the catalog is loaded from a local JSON file, so opening `index.html` directly as a `file://` URL is not supported):
+Serve this folder over HTTP because the catalog is loaded from local JSON files:
 
 ```sh
 python3 -m http.server 8000
@@ -12,16 +12,20 @@ python3 -m http.server 8000
 
 Then visit `http://localhost:8000`.
 
-## Catalog source and refresh
+## Catalog data
 
-`data/games.json` is a snapshot of `https://www.onlinegames.io/media/plugins/genGames/embed.json`. It includes the source entries' titles, HTTPS iframe URLs, images, tags, and descriptions. To refresh the full catalog:
+`data/games.json` is the OnlineGames.io snapshot from `https://www.onlinegames.io/media/plugins/genGames/embed.json`. Refresh that source with:
 
 ```sh
 curl -fsSL https://www.onlinegames.io/media/plugins/genGames/embed.json -o data/games.json
 ```
 
-The site serves this local snapshot instead of fetching the source feed at runtime, avoiding a dependency on third-party CORS headers. Game images and game frames themselves remain hosted by OnlineGames.io.
+`data/gamedistribution-games.json` stores 18 GameDistribution entries extracted from their public game pages. Each entry includes the provider's game ID, source page, publisher, tags, description, thumbnail URL, and iframe URL. Keep the two provider snapshots separate when refreshing so one feed cannot overwrite the other.
+
+## GameDistribution integration
+
+The iframe uses the provider's `html5.gamedistribution.com` game URL and sets `gd_sdk_referrer_url` to the current Playfield page when launched. The “Open game” link points to the corresponding GameDistribution game page. GameDistribution describes embedded-link publishing as part of its Direct Game Integration and says publishers complete its onboarding before publishing. Confirm that the site is approved for this integration before deploying these embeds publicly. Games and their advertising, availability, and terms remain controlled by their providers.
 
 ## Embeds
 
-Each game's source `embed` URL is loaded as a third-party iframe in the player dialog; the original game is also available through the “Open game” link. Games are hosted and controlled by their source provider. Some may refuse embedding, require network access, or behave differently across browsers; use the new-tab link when an iframe is unavailable. The player grants fullscreen and standard gameplay permissions requested by browser games.
+Game providers may block iframe playback, require network access, or behave differently across browsers. If a game does not load in the site, use its “Open game” link. The player grants fullscreen and standard browser-game permissions.
